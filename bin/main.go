@@ -7,6 +7,7 @@ import (
 	"log"
 	"strings"
 	"time"
+	"os"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/chromedp"
