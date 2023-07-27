@@ -1,13 +1,9 @@
 <?php
 
 require_once 'SocialMediaGetUsername.php';
-require_once 'Router.php';
 
-Router::get('/', function () {
-    echo "works";
-});
-
-Router::get('/{platform}', function ($platform) {
+if (isset($_GET['platform'])) {
+    $platform = $_GET['platform'];
     $url = $_GET['url'] ?? '';
     $decodedUrl = urldecode($url);
 
@@ -26,6 +22,6 @@ Router::get('/{platform}', function ($platform) {
     } catch (Exception $e) {
         echo "Error: " . htmlspecialchars($e->getMessage());
     }
-});
-
-Router::dispatch();
+} else {
+    echo "Error: 'platform' parameter is missing.";
+}
