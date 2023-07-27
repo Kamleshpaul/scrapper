@@ -25,6 +25,9 @@ async function scrapeInstagramUsername(url, options) {
 
     await page.goto(url, { waitUntil: "networkidle2" });
 
+    await page.screenshot({ path: 'screenshot1.png' });
+
+
     const isFollowButton = await page.evaluate(() => {
       const buttons = Array.from(document.querySelectorAll("button"));
       return buttons.some((button) => button.textContent.includes("Follow"));
@@ -32,6 +35,7 @@ async function scrapeInstagramUsername(url, options) {
 
     if (!isFollowButton) {
       console.log("Profile is private or follow button not found.");
+      await page.screenshot({ path: 'screenshot2.png' });
       await browser.close();
       process.exit(0);
     }
