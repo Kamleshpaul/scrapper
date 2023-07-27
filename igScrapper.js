@@ -6,7 +6,7 @@ program
   .arguments("<url>")
   .action(async (url) => {
     const username = await scrapeInstagramUsername(url, {
-      headless: "new",
+      headless: false,
       args: ["--no-sandbox"],
     });
     console.log(username);
