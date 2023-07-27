@@ -56,11 +56,14 @@ class SocialMediaGetUsername {
             throw new \Exception('Invalid Instagram URL. The URL should start with "https://www.instagram.com/".');
         }
 
-        $app = __DIR__ . '/bin/ig-username';
-        $username = shell_exec($app . " --url=" . escapeshellarg($this->url));
-        if (!$username) {
-            throw new \Exception('Username not found.');
-        }
-        return $username;
+
+//        $app = __DIR__ . '/bin/ig-username';
+//        $username = shell_exec($app . " --url=" . escapeshellarg($this->url));
+//        if (!$username) {
+//            throw new \Exception('Username not found.');
+//        }
+        var_dump($this->fetchInstagramUsername($this->url));
+        return '';
     }
+
 }
