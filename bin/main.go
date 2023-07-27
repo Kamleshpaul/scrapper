@@ -15,6 +15,7 @@ import (
 func main() {
 	// Define command-line flags
 	urlFlag := flag.String("url", "", "Instagram post URL")
+	proxyURL := flag.String("proxy", "", "Proxy URL with authentication (e.g., http://username:password@proxy_ip:port)")
 	flag.Parse()
 
 	if *urlFlag == "" {
@@ -26,12 +27,21 @@ func main() {
 	}
 
 	// Create a new context for the timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Create a new context for the chromedp actions
 	chromectx, cancelChrome := chromedp.NewContext(ctx)
 	defer cancelChrome()
+
+	// Set up a custom network with the proxy if provided
+	if *proxyURL != "" {
+		opts := append(chromedp.DefaultExecAllocatorOptions[:],
+			chromedp.ProxyServer(*proxyURL),
+		)
+		chromectx, cancelChrome = chromedp.NewExecAllocator(ctx, opts...)
+		defer cancelChrome()
+	}
 
 	var htmlContent string
 	err := chromedp.Run(chromectx,
