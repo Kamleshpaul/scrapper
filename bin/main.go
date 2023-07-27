@@ -84,5 +84,9 @@ func main() {
 		}
 	})
 
-	fmt.Println(username)
+	if username == "" {
+		log.Println("Username not found on the Instagram post.")
+	} else {
+		fmt.Println(username)
+	}
 }
