@@ -18,6 +18,9 @@ func main() {
 	proxyURL := flag.String("proxy", "", "Proxy URL with authentication (e.g., http://username:password@proxy_ip:port)")
 	flag.Parse()
 
+	// Set log output to os.Stdout for displaying logs in the terminal
+	log.SetOutput(os.Stdout)
+
 	if *urlFlag == "" {
 		log.Fatal("Please provide the Instagram post URL using the -url flag")
 	}
