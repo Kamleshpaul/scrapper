@@ -27,7 +27,7 @@ func main() {
 	}
 
 	// Create a new context for the timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second) // Increased timeout to 30 seconds
 	defer cancel()
 
 	// Create a new context for the chromedp actions
@@ -36,6 +36,7 @@ func main() {
 
 	// Set up a custom network with the proxy if provided
 	if *proxyURL != "" {
+		log.Printf("Using Proxy: %s\n", *proxyURL) // Log the proxy being used
 		opts := append(chromedp.DefaultExecAllocatorOptions[:],
 			chromedp.ProxyServer(*proxyURL),
 		)
@@ -43,6 +44,7 @@ func main() {
 		defer cancelChrome()
 	}
 
+	startTime := time.Now()
 	var htmlContent string
 	err := chromedp.Run(chromectx,
 		chromedp.Navigate(*urlFlag),
@@ -50,6 +52,7 @@ func main() {
 		chromedp.Sleep(1*time.Second), // Add a short sleep to allow page content to load
 		chromedp.OuterHTML(`article`, &htmlContent, chromedp.ByQuery),
 	)
+	duration := time.Since(startTime)
 
 	if err != nil {
 		if strings.Contains(err.Error(), "context deadline exceeded") {
@@ -59,6 +62,8 @@ func main() {
 		}
 		return
 	}
+
+	log.Printf("Response Time: %v\n", duration)
 
 	// Extract the username from the HTML content using a simple parser
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(htmlContent))
