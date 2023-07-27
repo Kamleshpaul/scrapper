@@ -26,7 +26,7 @@ func main() {
 	}
 
 	// Create a new context for the timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// Create a new context for the chromedp actions
